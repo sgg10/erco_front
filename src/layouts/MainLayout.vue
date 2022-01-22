@@ -9,14 +9,14 @@
       <hr class="mt-5">
     </div>
 
-    <b-table striped hover select-mode="single" responsive selectable  @row-selected="onRowCountrySelected" :items="paises"></b-table>
+    <b-table :fields="fields.paises" striped hover select-mode="single" responsive selectable  @row-selected="onRowCountrySelected" :items="paises"></b-table>
 
     <b-modal id="state_modal">
-      <b-table striped hover select-mode="single" responsive selectable  @row-selected="onRowStateSelected" :items="estados"></b-table>
+      <b-table :fields="fields.estados" striped hover select-mode="single" responsive selectable  @row-selected="onRowStateSelected" :items="estados"></b-table>
     </b-modal>
 
     <b-modal id="cities_modal">
-      <b-table striped hover select-mode="single" responsive selectable  @row-selected="onRowSelected" :items="ciudades"></b-table>
+      <b-table :fields="fields.ciudades" striped hover select-mode="single" responsive selectable  @row-selected="onRowSelected" :items="ciudades"></b-table>
     </b-modal>
 
     <FooterBar/>
@@ -38,7 +38,12 @@ export default {
     return {
       paises: [],
       estados: [],
-      ciudades: []
+      ciudades: [],
+      fields: {
+        "paises": ["name"],
+        "estados": ["name"],
+        "ciudades": ["name", "population"]
+      }
     }
   },
   methods: {
