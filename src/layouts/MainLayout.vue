@@ -9,7 +9,15 @@
       <hr class="mt-5">
     </div>
 
-    <b-table striped hover select-mode="single" responsive selectable  @row-selected="onRowSelected" :items="paises"></b-table>
+    <b-table striped hover select-mode="single" responsive selectable  @row-selected="onRowCountrySelected" :items="paises"></b-table>
+
+    <b-modal id="state_modal">
+      <b-table striped hover select-mode="single" responsive selectable  @row-selected="onRowStateSelected" :items="estados"></b-table>
+    </b-modal>
+
+    <b-modal id="cities_modal">
+      <b-table striped hover select-mode="single" responsive selectable  @row-selected="onRowSelected" :items="ciudades"></b-table>
+    </b-modal>
 
     <FooterBar/>
   </div>
@@ -18,7 +26,7 @@
 <script>
 import HeaderBar from '@/components/HeaderBar/Index'
 import FooterBar from '@/components/Footer/Index'
-import {getCountries} from "@/api"
+import {getCountries, getState, getCities} from "@/api"
 
 export default {
   name: 'MainLayout',
@@ -29,14 +37,26 @@ export default {
   data () {
     return {
       paises: [],
+      estados: [],
+      ciudades: []
     }
   },
   methods: {
     countries () {
       getCountries().then (({data}) =>{ this.paises = data.countries})
     },
-    onRowSelected(item){
-        console.log(item)
+    onRowCountrySelected(item){
+      getState(item[0].id_country).then(({data}) =>{
+        this.estados = data.state
+        this.$bvModal.show("state_modal")
+      })
+    },
+    onRowStateSelected(item){
+      console.log(item)
+      getCities(item[0].id_state).then(({data}) =>{
+        this.ciudades = data.city
+        this.$bvModal.show("cities_modal")
+      })
     }
   },
   created(){
